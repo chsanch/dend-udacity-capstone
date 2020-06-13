@@ -144,3 +144,5 @@ static
 
 #vim
 *.swp
+#datasets
+datasets/*
