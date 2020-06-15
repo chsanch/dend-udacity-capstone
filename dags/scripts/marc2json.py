@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-import argparse
 from pymarc import XmlHandler, parse_xml
 import json
 import os
