@@ -5,7 +5,7 @@ import os
 def parse_json(json_file):
     catalog = pd.read_json(json_file, orient="columns")
     pubyear = catalog["pubyear"].str.extract(r"(\d{4})", expand=False)
-    catalog["clean_pubyear"] = pd.to_numeric(pubyear)
+    catalog["clean_pubyear"] = pubyear
     author = (
         catalog["author"]
         .str.extract(r"([\w]+-?[^\d\(\)\-]+)", expand=False)
@@ -80,23 +80,23 @@ def get_items(catalog):
     return items_df
 
 
-def df_to_json(df, output_file):
-    df.to_json(output_file, orient="records")
+def df_to_csv(df, output_file):
+    df.to_csv(output_file, header=False, index=False, sep="|")
 
 
 def main(json_file, books_file, items_file):
 
-    if (os.path.isfile(books_file) and os.path.isfile(items_file)):
+    if os.path.isfile(books_file) and os.path.isfile(items_file):
         print("Stage files already created.")
     else:
         print("Creating catalog file")
         catalog = parse_json(json_file)
         print("Creating books json file")
         books = get_books(catalog)
-        df_to_json(books, books_file)
+        df_to_csv(books, books_file)
         print("Creating items json file")
         items = get_items(catalog)
-        df_to_json(items, items_file)
+        df_to_csv(items, items_file)
 
 
 if __name__ == "__main__":

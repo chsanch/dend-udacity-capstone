@@ -30,12 +30,12 @@ def df_to_csv(df, output_file):
     df.to_csv(output_file, header=False, index=False)
 
 
-def main(datasets_folder):
-    list_loan_data = ["february-2018", "march-2018", "april-2018"]
+def main(datasets_folder, datasets_list):
 
-    for item in list_loan_data:
-        input_file = f"{datasets_folder}/{item}.csv"
-        output_file = f"{datasets_folder}/{item}_stage.csv"
+    for item in datasets_list:
+        item_file = item.split(".")
+        input_file = f"{datasets_folder}/{item_file[0]}.csv"
+        output_file = f"{datasets_folder}/{item_file[0]}_stage.csv"
 
         if os.path.isfile(input_file):
             if os.path.isfile(output_file):
