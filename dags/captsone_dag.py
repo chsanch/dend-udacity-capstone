@@ -137,7 +137,12 @@ load_book_loans_table = LoadDimensionOperator(
     truncate=True,
 )
 
-# run_quality_checks = DataQualityOperator(task_id="Run_data_quality_checks", dag=dag)
+run_quality_checks = DataQualityOperator(
+    task_id="Run_data_quality_checks",
+    dag=dag,
+    db_conn="capstone_db",
+    tables=["books", "books_locations", "loans", "book_loans"],
+)
 
 end_operator = DummyOperator(task_id="Stop_execution", dag=dag)
 
@@ -154,6 +159,7 @@ create_catalog_json_task >> [
 create_stage_files_task >> [
     books_to_database,
     books_locations_to_database,
-] >> load_book_loans_table >> end_operator
+] >> load_book_loans_table >> run_quality_checks >> end_operator
 
-create_loans_files_task >> loans_to_database >> load_book_loans_table >> end_operator
+create_loans_files_task >> loans_to_database >> load_book_loans_table
+load_book_loans_table >> run_quality_checks >> end_operator
