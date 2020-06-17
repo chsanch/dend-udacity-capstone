@@ -6,6 +6,7 @@ class SqlQueries:
             b.publisher,
             b.author,
             l.prbarc AS item_code,
+            b.isbn,
             bl.library,
             bl.district,
             l.prcolp AS user_type,
