@@ -13,6 +13,29 @@ Portal](https://datos.madrid.es/portal/site/egob), focusing only on the _book_
 loans. Just for test purposes the data used will be only for 2018, 
 but any other data could be easily added.
 
+### Tools Used
+
+This project uses as main tools:
+
+- [Postgres](https://www.postgresql.org)
+- [Airflow](https://airflow.apache.org/) 
+
+Also as we are dealing with MARCXML data one of the libraries used is:
+
+- [pymarc](https://pypi.org/project/pymarc/)
+
+These selected tools are enough for th4e scope of this project which is obtain
+the number of books on loan in Madrid during the year 2018 (This could be
+extended adding more datasets). 
+
+This data could be used to know for example:
+
+- Which were the most requested books during a period of time
+- Who is the most read author
+- Which library lend more books
+- Which Madrid district lend more books
+- Some other book related data 
+
 ## Data Description & Sources
 
 The two main sources used in this project are:
@@ -148,6 +171,29 @@ psql -U $DB_USER -h $DB_HOST -W $DB  < create_tables.sql
 
 - Start the Airflow scheduler and webserver and open the Admin page to trigger
   the DAG.
+
+## Scenarios
+
+Here are some possible scenarios and how they can be addressed:
+
+1. **The data was increased by 100x**: In this case one recommended solution is
+   to create an EMR Spark on Amazon to store the staging data, that way we could
+process more data in a fastest way. Also is recommended the use of Redshift, so
+the ETL should get data from Spark and store it into a Redshit Cluster. The
+aiflow DAG used can handle this changes just adding the connections to the AWS
+infraestructure instead of using the local enviroment.
+
+2. **The pipelines would be run on a daily basis by 7 am every day**: Airflow 
+allows to schedule the pipeline to run at any time, so in this case we could 
+configure the DAG to be triggered at 7am. Although it makes more sense for this
+ pipeline to occur monthly, because the Open Data portal update the datasets
+each month with the new obtained data.
+
+3. **The database needed to be accessed by 100+ people**: If we decided to use 
+Redshift this couldn't be a problem because the AWS platform provides a higly
+scalable infraestructure which could be accessed for as many people needed, just
+need to configure the [Concurrency Scaling feature](https://docs.aws.amazon.com/redshift/latest/dg/concurrency-scaling.html).
+
 
 ## Future work
 
