@@ -27,6 +27,11 @@ which provides the historical of all loans from 2014 until the current year.
 
 ## ETL Process
 
+The pipeline is executed using [Airflow](https://airflow.apache.org/), here is
+the diagram of the pipeline:
+
+![Airflow diagram](./imgs/pipeline_diagram.png)
+
 ### Download datasets
 
 The first step for the pipeline is to download all the datasets from the
@@ -49,6 +54,80 @@ needs to filter the data using some specific MARC fields (as stated in the
 documentation provided from the dataset repository), finally only those records
 will be stored in a JSON file which will be used for the next step.
 
+### Transform Data
+
+Once the data is downloaded and processed we need to obtain the data to be used
+for both fact and dimension tables.
+
+For this process I'm using [pandas](https://pandas.pydata.org) to read the
+_catalog_ dataset and the _loans_ dataset. From the catalog we can obtain the
+data for the _books_ and their _locations_ on the libraries, each library could
+have many items of each books and each of one is identified by an unique code
+(_prbarc_). 
+
+In this same step we will get also the data for each loan made in each library, 
+as in these data there are all the item loans we need also to filter the
+attribute `prcocs` which identify the type of item, in our case this value
+should be `LIB`.  
+
+### Load data
+
+In this step we already have all the data needed in CSV files, here we need to
+export the data into the database, the first step is to load the fact tables:
+
+```
+TABLE books (
+    book_id bigint PRIMARY KEY,
+    title text,
+    author text,
+    publisher text,
+    pubyear integer,
+    isbn text
+)
+
+```
+
+```
+TABLE loans (
+    prbarc bigint,
+    prcolp text,
+    prfpre date
+)
+```
+
+```
+TABLE books_locations (
+    book_id bigint,
+    district text,
+    library text,
+    prbarc bigint
+)
+```
+After the data is loaded in these tables, we are ready to obtain the data from
+them and store it into the dimensional table:
+
+```
+TABLE book_loans (
+    book_id bigint,
+    title text,
+    publisher text,
+    author text,
+    item_code bigint,
+    isbn text,
+    library text,
+    district text,
+    user_type text,
+    loan_date date
+)
+```
+
+Here is a ERD diagram of the database structure:
+
+![ERD diagram](./imgs/erd_diagram.png)
+
+The database used in this project is [Postgres](https://www.postgresql.org), but it should work also with
+[Redshift](https://aws.amazon.com/redshift/)
+
 ## Instructions
 
 - Install required libraries:
@@ -64,3 +143,24 @@ pip install -r requirements.txt
 psql -U $DB_USER -h $DB_HOST -W $DB  < create_tables.sql
 ```
 
+- Configure a Postgres connection in Airflow, the default conection name used in this
+  project is `capstone_db`.
+
+- Start the Airflow scheduler and webserver and open the Admin page to trigger
+  the DAG.
+
+## Future work
+
+As I mentioned at first this project only covers the loans of books for the year
+2018, this could be extended to use all the other types of items and also
+incorporate data from other years, currently the Open Data Portal of Madrid
+offers data from 2014 until the curren date.
+
+Incorporate more data related to the book using the ISBN field, with that we can
+obtain more info like price, reviews, etc. which could be useful to add more
+value to the data processed.
+
+Add a visualisation tool to generate reports, graphs, etc. That way obtain
+insights of the data could be easy. Here is the Top 10 books on loan in 2018:
+
+![Top 10 books](./imgs/top_10.png) 
