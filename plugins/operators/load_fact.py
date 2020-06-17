@@ -51,8 +51,6 @@ class LoadFactOperator(BaseOperator):
 
     def run_sql(self, data_path):
         database = PostgresHook(postgres_conn_id=self.db_conn)
-        self.log.info("Clearing data from destination table")
-        database.run("DELETE FROM {}".format(self.table))
         self.log.info(f"Inserting data into {self.table}")
         if self.insert_type == "csv":
             formatted_sql = LoadFactOperator.copy_from_csv.format(
