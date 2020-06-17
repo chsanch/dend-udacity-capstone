@@ -6,9 +6,10 @@ The purpose of this project is to demonstrate various skills associated with
 data engineering projects. In particular, developing ETL pipelines using
 Airflow, data storage as well as defining efficient data models e.g. star
 schema, etc. 
+
 For this project I will perform a pipeline using the data of the Madrid Public
 Libraries provided by the [Madrid OpenData
-Portal](https://datos.madrid.es/portal/site/egob),focusing only on the _book_ 
+Portal](https://datos.madrid.es/portal/site/egob), focusing only on the _book_ 
 loans. Just for test purposes the data used will be only for 2018, 
 but any other data could be easily added.
 
@@ -35,8 +36,9 @@ folder.
 
 ### Process staging data
 
-The loans data is stored in CSV format, so this could be used directly with no
+The loans records are stored in CSV format, so this data could be used directly with no
 processing.
+
 The catalog dataset is provided in the [MARCXML
 format](https://en.wikipedia.org/wiki/MARC_standards#MARCXML), to make use of
 the data  this needs to be converted from this format. For this task I'm
