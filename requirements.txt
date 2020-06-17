@@ -1,0 +1,5 @@
+pymarc
+psycopg2
+jupyter
+wget
+pandas
