@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS public.loans (
 CREATE TABLE IF NOT EXISTS public.book_loans (
     book_id bigint,
     title text,
-    publiser text,
+    publisher text,
     author text,
     item_code bigint,
     library text,
