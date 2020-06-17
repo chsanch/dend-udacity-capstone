@@ -71,7 +71,7 @@ def get_items(catalog):
                         "book_id": row[1],
                         "district": district,
                         "library": library,
-                        "prbarc": i,
+                        "prbarc": int(i),
                     }
                 )
 

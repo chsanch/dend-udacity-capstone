@@ -120,10 +120,14 @@ books_locations_to_database = LoadFactOperator(
     delimiter="|",
 )
 
-
-# load_time_dimension_table = LoadDimensionOperator(
-#     task_id="Load_time_dim_table", dag=dag
-# )
+load_book_loans_table = LoadDimensionOperator(
+    task_id="Load_book_loans_table",
+    dag=dag,
+    db_conn="capstone_db",
+    select_sql=SqlQueries.book_loans_insert,
+    table="book_loans",
+    truncate=True,
+)
 
 # run_quality_checks = DataQualityOperator(task_id="Run_data_quality_checks", dag=dag)
 
@@ -142,5 +146,6 @@ create_catalog_json_task >> [
 create_stage_files_task >> [
     books_to_database,
     books_locations_to_database,
-] >> end_operator
-create_loans_files_task >> loans_to_database >> end_operator
+] >> load_book_loans_table >> end_operator
+
+create_loans_files_task >> loans_to_database >> load_book_loans_table >> end_operator
