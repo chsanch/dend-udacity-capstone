@@ -30,6 +30,14 @@ loans_dataset_list = {
     "february-2018.csv": "https://datos.madrid.es/egob/catalogo/212700-80-bibliotecas-prestamos-historico.csv",
     "march-2018.csv": "https://datos.madrid.es/egob/catalogo/212700-82-bibliotecas-prestamos-historico.csv",
     "april-2018.csv": "https://datos.madrid.es/egob/catalogo/212700-84-bibliotecas-prestamos-historico.csv",
+    "may-2018.csv": "https://datos.madrid.es/egob/catalogo/212700-85-bibliotecas-prestamos-historico.csv",
+    "june-2018.csv": "https://datos.madrid.es/egob/catalogo/212700-87-bibliotecas-prestamos-historico.csv",
+    "july-2018.csv": "https://datos.madrid.es/egob/catalogo/212700-89-bibliotecas-prestamos-historico.csv",
+    "august-2018.csv": "https://datos.madrid.es/egob/catalogo/212700-91-bibliotecas-prestamos-historico.csv",
+    "september-2018.csv": "https://datos.madrid.es/egob/catalogo/212700-93-bibliotecas-prestamos-historico.csv",
+    "october-2018.csv": "https://datos.madrid.es/egob/catalogo/212700-95-bibliotecas-prestamos-historico.csv",
+    "november-2018.csv": "https://datos.madrid.es/egob/catalogeo/212700-97-bibliotecas-prestamos-historico.csv",
+    "december-2018.csv": "https://datos.madrid.es/egob/catalogo/212700-99-bibliotecas-prestamos-historico.csv",
 }
 
 catalog_dataset_url = (
